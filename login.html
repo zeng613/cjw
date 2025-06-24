@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			@import url('/cjw/css/shouye.css');
+			.captcha-container {
+				display: flex;
+				align-items: center;
+				margin: 10px 0;
+			}
+			.captcha-img {
+				width: 100px;
+				height: 30px;
+				background-color: #beb9b9;
+				color: #333 !important;
+				text-align: center;
+				line-height: 30px;
+				font-weight: bold;
+				letter-spacing: 2px;
+				margin-right: 10px;
+				border: 1px solid #ccc;
+			}
+			.captcha-input {
+				width: 100px;
+				padding: 5px;
+			}
+		</style>
+	<script>
+	// 从terms页面获取是否已阅读条款的状态
+	function updateAgreeCheckbox() {
+		const hasReadTerms = localStorage.getItem('hasReadTerms') === 'true';
+		const agreeCheckbox = document.getElementById('agreeTerms');
+		agreeCheckbox.disabled = !hasReadTerms;
+		agreeCheckbox.checked = hasReadTerms;
+	}
+	
+	// 初始化复选框状态
+	updateAgreeCheckbox();
+	
+	// 监听localStorage变化
+	window.addEventListener('storage', function(e) {
+		if(e.key === 'hasReadTerms') {
+			updateAgreeCheckbox();
+		}
+	});
+	
+	// 监听terms页面返回的消息
+	window.addEventListener('message', function(event) {
+		if(event.data === 'termsAccepted') {
+			localStorage.setItem('hasReadTerms', 'true');
+			const agreeCheckbox = document.getElementById('agreeTerms');
+			agreeCheckbox.disabled = false;
+			agreeCheckbox.checked = true;
+		}
+	});
+
+		function generateCaptcha() {
+			const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+			let captcha = '';
+			for(let i=0; i<4; i++) {
+				captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+			}
+			
+			const captchaContainer = document.getElementById('captchaText');
+			captchaContainer.textContent = captcha;
+			captchaContainer.style.fontWeight = 'bold';
+			captchaContainer.style.letterSpacing = '2px';
+			
+			return captcha;
+		}
+		
+		
+
+function validateForm() {
+            if (!document.getElementById('agreeTerms').checked) {
+                alert('请勾选同意服务条款');
+                return false;
+            }
+            
+            const captchaInput = document.getElementById('captchaInput').value.trim();
+            if(!captchaInput) {
+                alert('请输入验证码');
+                return false;
+            }
+            
+            return validateCaptcha();
+        }
+
+        function validateCaptcha() {
+			const userInput = document.getElementById('captchaInput').value.trim().toUpperCase();
+			const realCaptcha = document.getElementById('captchaText').textContent;
+			if(userInput !== realCaptcha) {
+				alert('验证码错误，请重新输入！');
+				generateCaptcha();
+				document.getElementById('captchaInput').value = '';
+				return false;
+			}
+			return true;
+		}
+		
+		// 生成验证码
+		function generateCaptcha() {
+			const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+			let captcha = '';
+			for(let i=0; i<4; i++) {
+				captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+			}
+			
+			const captchaContainer = document.getElementById('captchaText');
+			captchaContainer.textContent = captcha;
+			captchaContainer.style.fontWeight = 'bold';
+			captchaContainer.style.letterSpacing = '2px';
+			
+			return captcha;
+		}
+		
+		// 页面加载时立即生成验证码
+		window.onload = function() {
+			generateCaptcha();
+		};
+	</script>
+	</head>
+	<body>
+		<h1>彩鸡网络安全</h1>
+		<div id="logo"><img src="img/b91fc3f975615fb22090a4a6c9f437ef.png" width="500px"/></div>
+		<div id="logon">
+			<form action="index.html" method="get" onsubmit="return validateForm()">
+				用户名:<p><input type="text" placeholder="请输入用户名" name="user" class="logon3" required title="不能包含空格,且长度不能超过16位" minlength="4" maxlength="16" pattern="^\S+$" /></p>
+				密码：<p><input type="password" placeholder="请输入密码" name="password" class="logon4" maxlength="12" required minlength="6" pattern="^[a-z0-9]+$" title="密码需是小写字母和数字,不能超过12位"/></p>
+				<div class="captcha-container">
+					<div id="captchaText" style="display: block; width: 100px; height: 30px;"></div>
+					<input type="text" id="captchaInput" class="captcha-input" placeholder="输入验证码" required>
+				</div>
+				<p><input type="submit" value="登录" class="logon2"/></p>
+				<font>没有账号密码</font><a href="Register.html" class="logon1">注册</a>
+				<div class="terms-link">
+            <p>请先阅读并同意<a href="terms.html" target="_blank">服务条款</a></p>
+            <div class="checkbox-container">
+                <input type="checkbox" id="agreeTerms" name="agreeTerms">
+                <label for="agreeTerms">我已阅读并同意以上条款</label>
+            </div>
+        </div>
+			</form>
+		</div>
+	</body>
+</html>

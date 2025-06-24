@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>对话框</title>
+    <link rel="stylesheet" href="/cjw/css/1.css">
+    <style>
+        .dialog {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            background-color: #194a96;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .dialog-content {
+            margin-bottom: 20px;
+        }
+        .dialog-buttons {
+            display: flex;
+            justify-content: space-around;
+        }
+        .dialog-button {
+            padding: 8px 20px;
+            background-color: white;
+            color: #194a96;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="dialog">
+        <div class="dialog-content">
+            <h3>这是一个对话框</h3>
+            <p>请选择您的操作</p>
+        </div>
+        <div class="dialog-buttons">
+            <button class="dialog-button" onclick="window.location.href='deepseek.html'">确定</button>
+            <button class="dialog-button" onclick="this.parentNode.parentNode.style.display='none'">取消</button>
+        </div>
+    </div>
+</body>
+</html>

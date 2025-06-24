@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户服务条款</title>
+    <link rel="stylesheet" href="/cjw/css/1.css">
+    <style>
+        .terms-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .terms-content {
+            height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .timer {
+            text-align: center;
+            margin: 15px 0;
+            font-size: 16px;
+        }
+        .agree-btn {
+            display: block;
+            width: 200px;
+            margin: 0 auto;
+            padding: 10px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .agree-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div id="box">
+        <div class="terms-container">
+            <h2 style="text-align: center;">用户服务条款</h2>
+            <div class="terms-content">
+                <!-- 这里放置详细的条款内容 -->
+                <p>1. 用户在使用本网站服务前，请务必仔细阅读并理解本协议的全部内容。</p>
+                <p>2. 未成年人应在法定监护人陪同下阅读本协议，并在取得监护人同意后使用本服务。</p>
+                <p>3. 用户在使用本网站提供的各项服务时，承诺遵守国家相关法律法规及本协议的各项条款。</p>
+                <p>4. 本网站有权根据法律法规的变化或业务发展需要，不时修改本协议条款。</p>
+                <p>5. 用户在使用本网站服务过程中，应保证所提供的信息真实、准确、完整。</p>
+                <p>6. 用户不得利用本网站从事任何违法或不正当的活动。</p>
+                <p>7. 本网站保留在任何时候不经通知修改、暂停或终止服务的权利。</p>
+                <p>8. 用户应对其账号和密码的安全负全部责任。</p>
+                <p>9. 本网站不对用户因使用或无法使用本服务而导致的任何直接或间接损失承担责任。</p>
+                <p>10. 本协议的解释权及修改权归本网站所有。</p>
+            </div>
+            <label for="agreeCheckbox">我已阅读并同意以上条款 (<span id="countdown">5</span>秒后可同意)</label>
+            <div class="btn-container" style="text-align: center; margin: 30px 0;">
+                <button id="agreeBtn" class="agree-btn" disabled onclick="window.location.href='login.html'" style="
+                    padding: 12px 25px;
+                    font-size: 18px;
+                    font-weight: bold;
+                    background-color: #cccccc;
+                    color: white;
+                    border: none;
+                    border-radius: 6px;
+                    cursor: not-allowed;
+                    transition: all 0.3s;
+                    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+                    width: 240px;
+                    letter-spacing: 1px;
+                ">
+                    我已阅读并同意以上条款
+                </button>
+            </div>
+<script>
+let countdown = 5;
+const countdownInterval = setInterval(() => {
+    countdown--;
+    document.getElementById('countdown').textContent = countdown;
+    if(countdown <= 0) {
+        clearInterval(countdownInterval);
+        document.getElementById('agreeBtn').disabled = false;
+        document.getElementById('countdown').textContent = '0';
+    }
+}, 1000);
+</script>
+        </div>
+    </div>
+
+    <script>
+        let seconds = 5;
+        const countdownElement = document.getElementById('countdown');
+        const agreeBtn = document.getElementById('agreeBtn');
+        
+        const timer = setInterval(() => {
+            seconds--;
+            countdownElement.textContent = seconds;
+            
+            if (seconds <= 0) {
+                clearInterval(timer);
+                agreeBtn.disabled = false;
+                agreeBtn.style.backgroundColor = '#4CAF50';
+                agreeBtn.style.cursor = 'pointer';
+                agreeBtn.style.color = 'white';
+                countdownElement.textContent = '0';
+                localStorage.setItem('hasReadTerms', 'true');
+                if (window.opener) {
+                    window.opener.postMessage('termsAccepted', '*');
+                }
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
